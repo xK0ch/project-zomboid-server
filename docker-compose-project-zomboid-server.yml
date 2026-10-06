@@ -6,6 +6,8 @@ services:
     environment:
       SERVER_NAME: "MLTSF"
       SERVER_PASSWORD: ${SERVER_PASSWORD}
+      MODS: "KnoxBuildworks;ElyonLib;KnoxBuildworksVanillaExpanded;hand-bag-window-climb;FixedLightOnBeltAF;MarzVanillaGuns;SWMG;HBAmmoCraft;HBVCEFb42;HBTacReload;StatZContinued;SpawnSelector;ProximityInventory;ProjectExile;Ladders42204;EQUIPMENT_UI"
+      WORKSHOP_ITEMS: "2847184718;2950902979;3384377738;3389093252;3610677934;3629835761;3637486686;3722064198;3772052709;3772269882;3773834525;3778709615;3790259769"
     command:
       - sh
       - -c
@@ -13,11 +15,16 @@ services:
         mkdir -p /config/Server
         ini="/config/Server/$${SERVER_NAME}.ini"
         touch "$$ini"
-        if grep -q '^Password=' "$$ini"; then
-          sed -i "s|^Password=.*|Password=$${SERVER_PASSWORD}|" "$$ini"
-        else
-          echo "Password=$${SERVER_PASSWORD}" >> "$$ini"
-        fi
+        set_ini() {
+          if grep -q "^$$1=" "$$ini"; then
+            sed -i "s|^$$1=.*|$$1=$$2|" "$$ini"
+          else
+            echo "$$1=$$2" >> "$$ini"
+          fi
+        }
+        set_ini Password "$${SERVER_PASSWORD}"
+        set_ini Mods "$${MODS}"
+        set_ini WorkshopItems "$${WORKSHOP_ITEMS}"
         chown -R 1000:1000 /config
     volumes:
       - /home/${HOST_USER}/projectzomboid/server-data:/config

@@ -1,0 +1,51 @@
+services:
+  projectzomboid-config:
+    image: alpine:latest
+    container_name: projectzomboid-config
+    restart: "no"
+    environment:
+      SERVER_NAME: "MLTSF"
+      SERVER_PASSWORD: ${SERVER_PASSWORD}
+    command:
+      - sh
+      - -c
+      - |
+        mkdir -p /config/Server
+        ini="/config/Server/$${SERVER_NAME}.ini"
+        touch "$$ini"
+        if grep -q '^Password=' "$$ini"; then
+          sed -i "s|^Password=.*|Password=$${SERVER_PASSWORD}|" "$$ini"
+        else
+          echo "Password=$${SERVER_PASSWORD}" >> "$$ini"
+        fi
+        chown -R 1000:1000 /config
+    volumes:
+      - /home/${HOST_USER}/projectzomboid/server-data:/config
+
+  projectzomboid:
+    image: indifferentbroccoli/projectzomboid-server-docker:latest
+    container_name: projectzomboid-server
+    restart: unless-stopped
+    stop_grace_period: 30s
+    depends_on:
+      projectzomboid-config:
+        condition: service_completed_successfully
+    ports:
+      - "16261:16261/udp"
+      - "16262:16262/udp"
+    environment:
+      ADMIN_USERNAME: "admin"
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      RCON_PASSWORD: ${RCON_PASSWORD}
+      SERVER_NAME: "MLTSF"
+      MAX_PLAYERS: "4"
+      MEMORY_XMX_GB: "6"
+      UPDATE_ON_START: "true"
+      STEAM_VAC: "true"
+      USE_STEAM: "true"
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "Europe/Berlin"
+    volumes:
+      - /home/${HOST_USER}/projectzomboid/server-files:/project-zomboid
+      - /home/${HOST_USER}/projectzomboid/server-data:/project-zomboid-config

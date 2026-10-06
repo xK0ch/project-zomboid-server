@@ -8,6 +8,8 @@ services:
       SERVER_PASSWORD: ${SERVER_PASSWORD}
       MODS: "KnoxBuildworks;ElyonLib;KnoxBuildworksVanillaExpanded;hand-bag-window-climb;FixedLightOnBeltAF;MarzVanillaGuns;SWMG;HBAmmoCraft;HBVCEFb42;HBTacReload;StatZContinued;SpawnSelector;ProximityInventory;ProjectExile;Ladders42204;EQUIPMENT_UI"
       WORKSHOP_ITEMS: "2847184718;2950902979;3384377738;3389093252;3610677934;3629835761;3637486686;3722064198;3772052709;3772269882;3773834525;3778709615;3790259769"
+      XP_MULTIPLIER: "6.0"
+      CHARACTER_FREE_POINTS: "40"
     command:
       - sh
       - -c
@@ -25,6 +27,11 @@ services:
         set_ini Password "$${SERVER_PASSWORD}"
         set_ini Mods "$${MODS}"
         set_ini WorkshopItems "$${WORKSHOP_ITEMS}"
+        sandbox="/config/Server/$${SERVER_NAME}_SandboxVars.lua"
+        if [ -f "$$sandbox" ]; then
+          sed -i "s|^\( *\)Global = .*|\1Global = $${XP_MULTIPLIER},|" "$$sandbox"
+          sed -i "s|^\( *\)CharacterFreePoints = .*|\1CharacterFreePoints = $${CHARACTER_FREE_POINTS},|" "$$sandbox"
+        fi
         chown -R 1000:1000 /config
     volumes:
       - /home/${HOST_USER}/projectzomboid/server-data:/config

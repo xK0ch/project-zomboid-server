@@ -6,8 +6,8 @@ services:
     environment:
       SERVER_NAME: "MLTSF"
       SERVER_PASSWORD: ${SERVER_PASSWORD}
-      MODS: "KnoxBuildworks;ElyonLib;KnoxBuildworksVanillaExpanded;hand-bag-window-climb;FixedLightOnBeltAF;MarzVanillaGuns;SWMG;HBAmmoCraft;HBVCEFb42;HBTacReload;StatZContinued;SpawnSelector;ProximityInventory;ProjectExile;Ladders42204;EQUIPMENT_UI"
-      WORKSHOP_ITEMS: "2847184718;2950902979;3384377738;3389093252;3610677934;3629835761;3637486686;3722064198;3772052709;3772269882;3773834525;3778709615;3790259769"
+      MODS: "KnoxBuildworks;ElyonLib;KnoxBuildworksVanillaExpanded;hand-bag-window-climb;FixedLightOnBeltAF;MarzVanillaGuns;SWMG;HBAmmoCraft;HBVCEFb42;HBTacReload;StatZContinued;SpawnSelector;ProximityInventory;ProjectExile;Ladders42204;EQUIPMENT_UI;UsefulPallets;VanillaVehiclesAnimated;NepWreckWorkingCars"
+      WORKSHOP_ITEMS: "2847184718;2950902979;3384377738;3389093252;3610677934;3629835761;3637486686;3722064198;3772052709;3772269882;3773834525;3778709615;3790259769;3813053718;3281755175;3428369137"
       XP_MULTIPLIER: "6.0"
       CHARACTER_FREE_POINTS: "40"
     command:
